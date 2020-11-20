@@ -1,0 +1,296 @@
+<html>
+
+<head>
+
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+
+</head>
+
+<body>
+
+
+
+  <script>
+
+
+let myData = d3.csv("Data.csv").then(function(myData) {
+  console.log(myData);
+  init(myData);
+});
+
+
+function init(elements) {
+
+
+  let canvasW = 700;
+  let canvasH = 400;
+
+  let margin = 50;
+  let w = canvasW - (margin * 2);
+  let h = canvasH - (margin * 2);
+  let xinc = w / 6;
+  let yinc = h / 10;
+
+  let svg = d3.select("body").append("svg")
+    .attr("width", canvasW)
+    .attr("height", canvasH)
+    .style("background-color", d3.color("rgba(255, 255, 255, 1)"))
+    ;
+
+  let foodrects = svg.selectAll()
+    .data(elements)
+    .enter() 
+    .append("rect") 
+    .attr("fill", d3.color("rgba(0,255,0,1)"))
+	.attr("x", d => { return (d.id * xinc); })
+    .attr("y", 200)
+    .attr("width", 20)
+	.attr("height", d => (d.food * 10))
+    .attr("stroke", d3.color("rgba(0,0,0,0.5)"))
+    .attr("stroke-width", 0)
+
+    .on("mouseover", handleMouseOver_Food)
+    .on("mouseout", handleMouseOut_Food);
+	
+	
+  ;
+  
+  let drinkrects = svg.selectAll()
+    .data(elements)
+    .enter() 
+    .append("rect") 
+    .attr("fill", d3.color("rgba(100,100,255,1)"))
+	.attr("x", d => { return (d.id * xinc)+20; })
+    .attr("y", 200)
+    .attr("width", 20)
+	.attr("height", d => (d.drink * 10))
+    .attr("stroke", d3.color("rgba(0,0,0,0.5)"))
+    .attr("stroke-width", 0)
+
+    .on("mouseover", handleMouseOver_Drink)
+    .on("mouseout", handleMouseOut_Drink);
+	
+	
+  ;
+  let dishrects = svg.selectAll()
+    .data(elements)
+    .enter() 
+    .append("rect") 
+    .attr("fill", d3.color("rgba(200,200,200,1)"))
+	.attr("x", d => { return (d.id * xinc)+40; })
+    .attr("y", 200)
+    .attr("width", 20)
+	.attr("height", d => (d.dish * 10))
+    .attr("stroke", d3.color("rgba(0,0,0,0.5)"))
+    .attr("stroke-width", 0)
+
+    .on("mouseover", handleMouseOver_Dish)
+    .on("mouseout", handleMouseOut_Dish);
+	
+	
+  ;
+
+let foodText = svg.selectAll()
+    .data(elements)
+    .enter() 
+    .append("text") 
+	.attr("text-anchor", "middle")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "16px")
+    .attr("fill", "rgba(0,0,0,0)")
+	.attr("x", d => { return (d.id * xinc)+10; })
+    .attr("y", 220)
+	.text(d => {return d.food})
+
+    .on("mouseover", handleMouseOver_Text)
+    .on("mouseout", handleMouseOut_Text);
+	
+	
+  ;
+  
+ let drinkText = svg.selectAll()
+    .data(elements)
+    .enter() 
+    .append("text") 
+	.attr("text-anchor", "middle")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "16px")
+    .attr("fill", "rgba(0,0,0,0)")
+	.attr("x", d => { return (d.id * xinc)+30; })
+    .attr("y", 220)
+	.text(d => {return d.drink})
+
+    .on("mouseover", handleMouseOver_Text)
+    .on("mouseout", handleMouseOut_Text);
+	
+	
+  ;
+  
+ let dishText = svg.selectAll()
+    .data(elements)
+    .enter() 
+    .append("text") 
+	.attr("text-anchor", "middle")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "16px")
+    .attr("fill", "rgba(0,0,0,0)")
+	.attr("x", d => { return (d.id * xinc)+50; })
+    .attr("y", 220)
+	.text(d => {return d.dish})
+
+    .on("mouseover", handleMouseOver_Text)
+    .on("mouseout", handleMouseOut_Text);
+	
+	
+  ;
+
+
+function handleMouseOver_Text(d, i) {
+
+    d3.select(this)
+      .transition()
+      .duration(1000)
+      .attr("fill", "rgba(0,0,0,1)")
+
+  }
+  function handleMouseOut_Text(d, i) {
+
+    d3.select(this).transition()
+      .duration("1000")
+      .attr("fill", "rgba(0,0,0,0)")
+  }
+
+  function handleMouseOver_Food(d, i) {
+
+    d3.select(this)
+      .transition()
+      .duration(1000)
+      .attr("fill", "rgba(255,200,150,1)")
+	  .attr("stroke-width", 5);
+
+  }
+  function handleMouseOut_Food(d, i) {
+
+    d3.select(this).transition()
+      .duration("1000")
+      .attr("fill", "rgba(0,255,0,1)")
+      .attr("height", d => d.food*10)
+      .attr("stroke-width", 0);
+  }
+  
+  function handleMouseOver_Drink(d, i) {
+
+    d3.select(this)
+      .transition()
+      .duration(1000)
+      .attr("fill", "rgba(100,200,255,1)")
+	  .attr("stroke-width", 5);
+
+  }
+  function handleMouseOut_Drink(d, i) {
+    d3.select(this).transition()
+      .duration("1000")
+      .attr("fill", "rgba(100,100,255,1)")
+      .attr("height", d => d.drink*10)
+      .attr("stroke-width", 0);
+  }
+  
+  function handleMouseOver_Dish(d, i) {
+
+    d3.select(this)
+      .transition()
+      .duration(1000)
+      .attr("fill", "rgba(255,255,255,1)")
+	  .attr("stroke-width", 5);
+
+  }
+  function handleMouseOut_Dish(d, i) {
+
+    d3.select(this).transition()
+      .duration("1000")
+      .attr("fill", "rgba(200,200,200,1)")
+      .attr("height", d => d.dish*10)
+      .attr("stroke-width", 0);
+  }
+
+  let text = svg.selectAll()
+    .data(elements)
+    .enter();
+
+  text
+    .append("text")
+    .attr("text-anchor", "middle")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "16px")
+    .attr("fill", "black")
+    .attr("x", d => { return (d.id * xinc)+30;})
+    .attr("y", 190)
+    .text(d => { return d.date })
+
+
+
+
+
+  const label = svg.append("text")
+    .attr("x", canvasW / 2)
+    .attr("y", canvasH - 40)
+    .attr("text-anchor", "middle")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "24px")
+    .attr("fill", "black")
+    .text("Reasons I went to the Kitchen");
+	
+const subtitle = svg.append("text")
+    .attr("x", canvasW / 2)
+    .attr("y", canvasH - 10)
+    .attr("text-anchor", "middle")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "16px")
+    .attr("fill", "black")
+    .text("Hover mouse near the top of each bar to see the # of times I did each thing that day");
+	
+const keyText = svg.append("text")
+    .attr("x", canvasW / 2)
+    .attr("y", 50)
+    .attr("text-anchor", "middle")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "16px")
+    .attr("fill", "black")
+    .text("Food-----Drink-----Dishes");
+	
+const foodLabel = svg.append("rect")
+    .attr("fill", d3.color("rgba(0,255,0,1)"))
+	.attr("x", canvasW/2 - 80)
+    .attr("y", 70)
+    .attr("width", 20)
+	.attr("height", 20)
+	
+const waterLabel = svg.append("rect")
+    .attr("fill", d3.color("rgba(0,0,255,1)"))
+	.attr("x", canvasW/2 - 20)
+    .attr("y", 70)
+    .attr("width", 20)
+	.attr("height", 20)
+	
+const dishLabel = svg.append("rect")
+    .attr("fill", d3.color("rgba(200,200,200,1)"))
+	.attr("x", canvasW/2 + 50)
+    .attr("y", 70)
+    .attr("width", 20)
+	.attr("height", 20)
+
+
+}
+
+
+
+
+
+    
+
+  </script>
+
+
+</body>
+
+</html>
